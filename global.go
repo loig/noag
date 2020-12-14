@@ -18,16 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package main
 
-import (
-	"fmt"
-	"math/rand"
-	"time"
+// characteristics of the generated automata
+const (
+	automatonMinNumStates  = 5
+	automatonMaxNumStates  = 10
+	automatonMinGoalStates = 2
+	automatonMaxGoalStates = 7
 )
-
-func main() {
-
-	rand.Seed(int64(time.Now().Nanosecond()))
-
-	fmt.Println(genAutomaton(5, 12))
-
-}

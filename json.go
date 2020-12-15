@@ -75,9 +75,9 @@ func (a automaton) toJSON(id int) string {
 	}
 
 	// InputSymbols
-	jAutomaton.InputSymbols = make([]string, a.maxLabel-a.minLabel+1)
-	for i := a.minLabel; i < a.maxLabel+1; i++ {
-		jAutomaton.InputSymbols[i-a.minLabel] = fmt.Sprint(actionName, i)
+	jAutomaton.InputSymbols = make([]string, len(a.labels))
+	for i, label := range a.labels {
+		jAutomaton.InputSymbols[i] = fmt.Sprint(actionName, label)
 	}
 
 	// Transitions

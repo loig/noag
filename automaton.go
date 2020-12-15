@@ -29,8 +29,7 @@ The initial state is always 0.
 */
 type automaton struct {
 	numStates   int
-	minLabel    int
-	maxLabel    int
+	labels      []int
 	goalStates  []int
 	transitions []transition
 }
@@ -44,7 +43,7 @@ type transition struct {
 /*
 Generate an automaton by performing a search from its initial state
 */
-func genAutomaton(minLabel, maxLabel int) automaton {
+func genAutomaton(labels []int) automaton {
 
 	// number of states
 	numStates := rand.Intn(automatonMaxNumStates-automatonMinNumStates+1) + automatonMinNumStates
@@ -70,7 +69,7 @@ func genAutomaton(minLabel, maxLabel int) automaton {
 	transitions := make([]transition, 0)
 	nextStatePos := 1
 	allStatesReached := false
-	usedLabels := make([]bool, maxLabel-minLabel+1)
+	usedLabels := make([]bool, len(labels))
 	numLabelUsed := 0
 	allLabelsUsed := false
 	for !allStatesReached || !allLabelsUsed {
@@ -100,11 +99,12 @@ func genAutomaton(minLabel, maxLabel int) automaton {
 		// WARNING: this does not guarantee determinism of automata, does not
 		// avoid duplicate transitions, and may even lead to infinite time
 		// for automaton generation
-		label := rand.Intn(maxLabel-minLabel+1) + minLabel
-		if !usedLabels[label-minLabel] {
-			usedLabels[label-minLabel] = true
+		labelNum := rand.Intn(len(labels))
+		label := labels[labelNum]
+		if !usedLabels[labelNum] {
+			usedLabels[labelNum] = true
 			numLabelUsed++
-			if numLabelUsed >= maxLabel-minLabel+1 {
+			if numLabelUsed >= len(labels) {
 				allLabelsUsed = true
 			}
 		}
@@ -118,8 +118,7 @@ func genAutomaton(minLabel, maxLabel int) automaton {
 
 	return automaton{
 		numStates:   numStates,
-		minLabel:    minLabel,
-		maxLabel:    maxLabel,
+		labels:      labels,
 		goalStates:  goalStates,
 		transitions: transitions,
 	}

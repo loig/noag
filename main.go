@@ -28,7 +28,7 @@ func main() {
 
 	rand.Seed(int64(time.Now().Nanosecond()))
 
-	a := genAutomaton(0, 6)
+	a := genAutomaton([]int{1, 3, 12, 27, 5})
 	fmt.Println(a)
 	fmt.Println(a.toJSON(3))
 

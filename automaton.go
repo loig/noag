@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -66,7 +65,6 @@ func genAutomaton(minLabel, maxLabel int) automaton {
 	})
 	goalStates := make([]int, numGoalStates)
 	copy(goalStates, allStates[:numGoalStates])
-	fmt.Println(goalStates)
 
 	// set of transitions
 	transitions := make([]transition, 0)

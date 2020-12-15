@@ -70,15 +70,32 @@ func genAutomaton(labels []int) automaton {
 	nextStatePos := 1
 	allStatesReached := false
 	usedLabels := make([]bool, len(labels))
-	numLabelUsed := 0
+	numLabelsUsed := 0
 	allLabelsUsed := false
+	labelsUsedPerState := make([][]bool, numStates)
+	for i := 0; i < numStates; i++ {
+		labelsUsedPerState[i] = make([]bool, len(labels))
+	}
+	numLabelsUsedPerState := make([]int, numStates)
+	blockedStates := make([]bool, numStates)
+	numBlockedStates := 0
 	for !allStatesReached || !allLabelsUsed {
 		// choose a reachable state
 		var state int
+		var stateNum int
 		if allStatesReached {
-			state = rand.Intn(numStates)
+			stateNum = rand.Intn(numStates - numBlockedStates)
 		} else {
-			state = rand.Intn(nextStatePos)
+			stateNum = rand.Intn(nextStatePos - numBlockedStates)
+		}
+		stateCount := 0
+		statePos := 0
+		for stateCount <= stateNum {
+			if !blockedStates[statePos] {
+				stateCount++
+				state = statePos
+			}
+			statePos++
 		}
 		// choose a state to reach from it
 		var nextState int
@@ -96,15 +113,27 @@ func genAutomaton(labels []int) automaton {
 			allStatesReached = true
 		}
 		// choose a label
-		// WARNING: this does not guarantee determinism of automata, does not
-		// avoid duplicate transitions, and may even lead to infinite time
-		// for automaton generation
-		labelNum := rand.Intn(len(labels))
-		label := labels[labelNum]
-		if !usedLabels[labelNum] {
-			usedLabels[labelNum] = true
-			numLabelUsed++
-			if numLabelUsed >= len(labels) {
+		labelNum := rand.Intn(len(labels) - numLabelsUsedPerState[state])
+		labelCount := 0
+		labelPos := 0
+		var label int
+		for labelCount <= labelNum {
+			if !labelsUsedPerState[state][labelPos] {
+				labelCount++
+				label = labels[labelPos]
+			}
+			labelPos++
+		}
+		labelsUsedPerState[state][labelPos-1] = true
+		numLabelsUsedPerState[state]++
+		if numLabelsUsedPerState[state] >= len(labels) {
+			blockedStates[state] = true
+			numBlockedStates++
+		}
+		if !usedLabels[labelPos-1] {
+			usedLabels[labelPos-1] = true
+			numLabelsUsed++
+			if numLabelsUsed >= len(labels) {
 				allLabelsUsed = true
 			}
 		}

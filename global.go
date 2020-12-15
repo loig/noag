@@ -25,3 +25,10 @@ const (
 	automatonMinGoalStates = 2
 	automatonMaxGoalStates = 7
 )
+
+// names of things
+const (
+	automatonName = "A"
+	stateName     = "s"
+	actionName    = "act"
+)

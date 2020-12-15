@@ -29,21 +29,23 @@ States are positive integers from 0 to numStates - 1.
 The initial state is always 0.
 */
 type automaton struct {
-	numStates   uint
-	goalStates  []uint
+	numStates   int
+	minLabel    int
+	maxLabel    int
+	goalStates  []int
 	transitions []transition
 }
 
 type transition struct {
-	from  uint
-	to    uint
-	label uint
+	from  int
+	to    int
+	label int
 }
 
 /*
 Generate an automaton by performing a search from its initial state
 */
-func genAutomaton(minLabel, maxLabel uint) automaton {
+func genAutomaton(minLabel, maxLabel int) automaton {
 
 	// number of states
 	numStates := rand.Intn(automatonMaxNumStates-automatonMinNumStates+1) + automatonMinNumStates
@@ -55,14 +57,14 @@ func genAutomaton(minLabel, maxLabel uint) automaton {
 	}
 
 	// set of goal states
-	allStates := make([]uint, numStates)
+	allStates := make([]int, numStates)
 	for i := 0; i < numStates; i++ {
-		allStates[i] = uint(i)
+		allStates[i] = i
 	}
 	rand.Shuffle(numStates, func(i, j int) {
 		allStates[i], allStates[j] = allStates[j], allStates[i]
 	})
-	goalStates := make([]uint, numGoalStates)
+	goalStates := make([]int, numGoalStates)
 	copy(goalStates, allStates[:numGoalStates])
 	fmt.Println(goalStates)
 
@@ -70,23 +72,23 @@ func genAutomaton(minLabel, maxLabel uint) automaton {
 	transitions := make([]transition, 0)
 	nextStatePos := 1
 	allStatesReached := false
-	usedLabels := make([]bool, int(maxLabel-minLabel+1))
+	usedLabels := make([]bool, maxLabel-minLabel+1)
 	numLabelUsed := 0
 	allLabelsUsed := false
 	for !allStatesReached || !allLabelsUsed {
 		// choose a reachable state
-		var state uint
+		var state int
 		if allStatesReached {
-			state = uint(rand.Intn(numStates))
+			state = rand.Intn(numStates)
 		} else {
-			state = uint(rand.Intn(nextStatePos))
+			state = rand.Intn(nextStatePos)
 		}
 		// choose a state to reach from it
-		var nextState uint
+		var nextState int
 		if allStatesReached {
 			nextState = allStates[nextStatePos]
 		} else {
-			nextState = uint(nextStatePos)
+			nextState = nextStatePos
 		}
 		nextStatePos++
 		if nextStatePos >= numStates {
@@ -100,11 +102,11 @@ func genAutomaton(minLabel, maxLabel uint) automaton {
 		// WARNING: this does not guarantee determinism of automata, does not
 		// avoid duplicate transitions, and may even lead to infinite time
 		// for automaton generation
-		label := uint(rand.Intn(int(maxLabel-minLabel+1)) + int(minLabel))
-		if !usedLabels[int(label-minLabel)] {
-			usedLabels[int(label-minLabel)] = true
+		label := rand.Intn(maxLabel-minLabel+1) + minLabel
+		if !usedLabels[label-minLabel] {
+			usedLabels[label-minLabel] = true
 			numLabelUsed++
-			if numLabelUsed >= int(maxLabel-minLabel+1) {
+			if numLabelUsed >= maxLabel-minLabel+1 {
 				allLabelsUsed = true
 			}
 		}
@@ -117,7 +119,9 @@ func genAutomaton(minLabel, maxLabel uint) automaton {
 	}
 
 	return automaton{
-		numStates:   uint(numStates),
+		numStates:   numStates,
+		minLabel:    minLabel,
+		maxLabel:    maxLabel,
 		goalStates:  goalStates,
 		transitions: transitions,
 	}

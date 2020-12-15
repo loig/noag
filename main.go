@@ -28,6 +28,6 @@ func main() {
 
 	rand.Seed(int64(time.Now().Nanosecond()))
 
-	fmt.Println(genAutomaton(5, 12))
+	fmt.Println(genAutomaton(5, 12).toJSON(3))
 
 }

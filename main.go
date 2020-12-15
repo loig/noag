@@ -19,7 +19,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
 )
@@ -28,8 +30,11 @@ func main() {
 
 	rand.Seed(int64(time.Now().Nanosecond()))
 
-	a := genAutomaton([]int{1, 3, 12, 27, 5})
-	fmt.Println(a)
-	fmt.Println(a.toJSON(3))
+	g := genGraph()
+	out, err := json.Marshal(g.jsonAutomata)
+	if err != nil {
+		log.Panic(err)
+	}
+	fmt.Println(string(out))
 
 }

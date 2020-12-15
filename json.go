@@ -19,9 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 )
 
 type JSONAutomaton struct {
@@ -62,7 +60,7 @@ func (jsonTrans JSONTransitions) MarshalJSON() ([]byte, error) {
 	return []byte(asJSON), nil
 }
 
-func (a automaton) toJSON(id int) string {
+func (a automaton) toJSON(id int) JSONAutomaton {
 
 	// Name
 	var jAutomaton JSONAutomaton
@@ -99,12 +97,6 @@ func (a automaton) toJSON(id int) string {
 		jAutomaton.FinalStates[i] = fmt.Sprint(stateName, stateNum)
 	}
 
-	// Get result as JSON
-	out, err := json.Marshal(jAutomaton)
-	if err != nil {
-		log.Panic(err)
-	}
-
-	return string(out)
+	return jAutomaton
 
 }

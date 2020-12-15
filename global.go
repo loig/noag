@@ -24,11 +24,14 @@ const (
 	automatonMaxNumStates  = 10
 	automatonMinGoalStates = 2
 	automatonMaxGoalStates = 7
+	automatonMinLabels     = 3
+	automatonMaxLabels     = 8
+	graphNumAutomata       = 5
 )
 
 // names of things
 const (
 	automatonName = "A"
 	stateName     = "s"
-	actionName    = "act"
+	actionName    = "a"
 )

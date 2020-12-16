@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import (
-	"log"
 	"math/rand"
 )
 
@@ -38,7 +37,6 @@ func genGraph() graph {
 	allLabels := make([]int, 0)
 
 	for i := 0; i < graphNumAutomata; i++ {
-		log.Print("A", i, ":")
 		// determine numbers of labels and private labels
 		numLabels := rand.Intn(automatonMaxLabels-automatonMinLabels+1) + automatonMinLabels
 		maxPrivateLabels := automatonMaxPrivateLabels
@@ -50,17 +48,13 @@ func genGraph() graph {
 			minPrivateLabels = maxPrivateLabels
 		}
 		numPrivateLabels := rand.Intn(maxPrivateLabels-minPrivateLabels+1) + minPrivateLabels
-		log.Print(numLabels, " labels, ", numPrivateLabels, " privates")
 		// build a set of labels
 		labels := make([]int, numLabels)
 		if lastLabel == 0 {
 			for i := 0; i < numLabels; i++ {
 				labels[i] = i
 				if i < numLabels-numPrivateLabels {
-					log.Print("Maybe shared: a", i)
 					allLabels = append(allLabels, i)
-				} else {
-					log.Print("Private: a", i)
 				}
 			}
 			lastLabel += numLabels
@@ -69,24 +63,19 @@ func genGraph() graph {
 			if numSharedLabelsFromPrevious > len(allLabels) {
 				numSharedLabelsFromPrevious = len(allLabels)
 			}
-			log.Print(numSharedLabelsFromPrevious, " from previous")
 			if numSharedLabelsFromPrevious > 0 {
 				rand.Shuffle(len(allLabels), func(i, j int) {
 					allLabels[i], allLabels[j] = allLabels[j], allLabels[i]
 				})
 				for i := 0; i < numSharedLabelsFromPrevious; i++ {
 					labels[i] = allLabels[i]
-					log.Print("Shared: a", allLabels[i])
 				}
 			}
 			for i := numSharedLabelsFromPrevious; i < numLabels; i++ {
 				lastLabel++
 				labels[i] = lastLabel
 				if i < numLabels-numPrivateLabels {
-					log.Print("Maybe shared: a", lastLabel)
 					allLabels = append(allLabels, lastLabel)
-				} else {
-					log.Print("Private: a", lastLabel)
 				}
 			}
 		}

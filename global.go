@@ -28,8 +28,8 @@ const (
 	automatonMaxLabels              = 8  // must be greater or equal than the above
 	automatonMinPrivateLabels       = 2  // can be 0
 	automatonMaxPrivateLabels       = 7  // notice that the number of private labels is at most the number of labels minus 1 because at least one label must be shared
-	automatonMinTransitionsPerState = 2  // could be 0, will never be more than the number of labels in an automaton TODO: check that
-	automatonMinTransitions         = 10 // could be 0, will neve be more than the number of states * the number of labels in an automaton TODO: check that
+	automatonMinTransitionsPerState = 2  // could be 0, will never be more than the number of labels in an automaton
+	automatonMinTransitions         = 10 // could be 0, will neve be more than the number of states * the number of labels in an automaton
 	graphNumAutomata                = 5
 )
 

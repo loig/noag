@@ -83,14 +83,14 @@ func genAutomaton(labels []int) automaton {
 	if minNumTransitions > numStates*len(labels) {
 		minNumTransitions = numStates * len(labels)
 	}
-	enoughTransitions := false
+	enoughTransitions := automatonMinTransitions == 0
 	minNumTransitionsPerState := automatonMinTransitionsPerState
 	if minNumTransitionsPerState > len(labels) {
 		minNumTransitionsPerState = len(labels)
 	}
 	enoughTransitionsStates := make([]bool, numStates)
 	numEnoughTransitionsStates := 0
-	enoughTransitionsPerState := false
+	enoughTransitionsPerState := automatonMinTransitionsPerState == 0
 	for !allStatesReached || !allLabelsUsed ||
 		!enoughTransitions || !enoughTransitionsPerState {
 		// choose a reachable state

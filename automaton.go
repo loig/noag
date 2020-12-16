@@ -68,7 +68,10 @@ func genAutomaton(labels []int) automaton {
 	// set of transitions
 	transitions := make([]transition, 0)
 	nextStatePos := 1
-	allStatesReached := false
+	allStatesReached := numStates <= 1
+	if allStatesReached {
+		nextStatePos = 0
+	}
 	usedLabels := make([]bool, len(labels))
 	numLabelsUsed := 0
 	allLabelsUsed := false

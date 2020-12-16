@@ -41,7 +41,7 @@ type transition struct {
 }
 
 /*
-Generate an automaton by performing a search from its initial state
+Generate an automaton
 */
 func genAutomaton(labels []int) automaton {
 
@@ -79,7 +79,20 @@ func genAutomaton(labels []int) automaton {
 	numLabelsUsedPerState := make([]int, numStates)
 	blockedStates := make([]bool, numStates)
 	numBlockedStates := 0
-	for !allStatesReached || !allLabelsUsed {
+	minNumTransitions := automatonMinTransitions
+	if minNumTransitions > numStates*len(labels) {
+		minNumTransitions = numStates * len(labels)
+	}
+	enoughTransitions := false
+	minNumTransitionsPerState := automatonMinTransitionsPerState
+	if minNumTransitionsPerState > len(labels) {
+		minNumTransitionsPerState = len(labels)
+	}
+	enoughTransitionsStates := make([]bool, numStates)
+	numEnoughTransitionsStates := 0
+	enoughTransitionsPerState := false
+	for !allStatesReached || !allLabelsUsed ||
+		!enoughTransitions || !enoughTransitionsPerState {
 		// choose a reachable state
 		var state int
 		var stateNum int
@@ -130,12 +143,15 @@ func genAutomaton(labels []int) automaton {
 			blockedStates[state] = true
 			numBlockedStates++
 		}
+		if !enoughTransitionsStates[state] && numLabelsUsedPerState[state] >= minNumTransitionsPerState {
+			enoughTransitionsStates[state] = true
+			numEnoughTransitionsStates++
+			enoughTransitionsPerState = numEnoughTransitionsStates >= numStates
+		}
 		if !usedLabels[labelPos-1] {
 			usedLabels[labelPos-1] = true
 			numLabelsUsed++
-			if numLabelsUsed >= len(labels) {
-				allLabelsUsed = true
-			}
+			allLabelsUsed = numLabelsUsed >= len(labels)
 		}
 		// add a transition between the two states
 		transitions = append(transitions, transition{
@@ -143,6 +159,8 @@ func genAutomaton(labels []int) automaton {
 			to:    nextState,
 			label: label,
 		})
+		// count this transition
+		enoughTransitions = len(transitions) >= minNumTransitions
 	}
 
 	return automaton{

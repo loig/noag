@@ -20,13 +20,15 @@ package main
 
 // characteristics of the generated automata
 const (
-	automatonMinNumStates  = 5
-	automatonMaxNumStates  = 10
-	automatonMinGoalStates = 2
-	automatonMaxGoalStates = 7
-	automatonMinLabels     = 3
-	automatonMaxLabels     = 8
-	graphNumAutomata       = 5
+	automatonMinNumStates           = 5
+	automatonMaxNumStates           = 10
+	automatonMinGoalStates          = 2
+	automatonMaxGoalStates          = 7
+	automatonMinLabels              = 3
+	automatonMaxLabels              = 8
+	automatonMinTransitionsPerState = 2
+	automatonMinTransitions         = 10
+	graphNumAutomata                = 5
 )
 
 // names of things

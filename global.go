@@ -18,24 +18,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package main
 
+// characteristics of the generated automata
 var config Configuration
 
-// default characteristics of the generated automata
-/*
+// default config file
 const (
-	automatonMinNumStates           = 5
-	automatonMaxNumStates           = 10
-	automatonMinGoalStates          = 2
-	automatonMaxGoalStates          = 7
-	automatonMinLabels              = 3
-	automatonMaxLabels              = 8
-	automatonMinPrivateLabels       = 2
-	automatonMaxPrivateLabels       = 7
-	automatonMinTransitionsPerState = 2
-	automatonMinTransitions         = 10
-	graphNumAutomata                = 5
+	configFile = "conf.json"
+	outputFile = "out.json"
 )
-*/
 
 // default names of things
 const (

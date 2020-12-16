@@ -39,14 +39,18 @@ type Configuration struct {
 }
 
 func readConfigurationFile(file string) {
+	log.Print("Reading configuration file ", file)
+
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal("Error: cannot open configuration file ", file)
+		//log.Panic(err)
 	}
 
 	err = json.Unmarshal(data, &config)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal("Error: cannot parse configuration file ", file)
+		//log.Panic(err)
 	}
 
 	// at least one state per automaton

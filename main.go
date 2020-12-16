@@ -20,7 +20,8 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"flag"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"time"
@@ -30,12 +31,25 @@ func main() {
 
 	rand.Seed(int64(time.Now().Nanosecond()))
 
-	readConfigurationFile("conf.json")
+	var configFileName string
+	var outputFileName string
+	flag.StringVar(&configFileName, "conf", configFile, "Path to configuration file")
+	flag.StringVar(&outputFileName, "out", outputFile, "Path to output file")
+	flag.Parse()
+
+	readConfigurationFile(configFileName)
+
 	g := genGraph()
 	out, err := json.Marshal(g.jsonAutomata)
 	if err != nil {
+		log.Fatal("Error: cannot build the json output")
+		//log.Panic(err)
+	}
+
+	log.Print("Writing automata into ", outputFileName)
+	err = ioutil.WriteFile(outputFileName, out, 0644)
+	if err != nil {
+		log.Fatal("Error: cannot write to output file (", outputFileName, ")")
 		log.Panic(err)
 	}
-	fmt.Println(string(out))
-
 }

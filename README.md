@@ -1,5 +1,5 @@
 # NoAG (Networks of Automata Generation)
-A tool for generation of networks of automata
+A tool for random generation of networks of automata
 
 ## Configuration
 The tool can be configured using a json configuration file, see conf.json for an example.

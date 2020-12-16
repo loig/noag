@@ -18,7 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package main
 
-import "math/rand"
+import (
+	"log"
+	"math/rand"
+)
 
 type graph struct {
 	automata     []automaton
@@ -35,30 +38,56 @@ func genGraph() graph {
 	allLabels := make([]int, 0)
 
 	for i := 0; i < graphNumAutomata; i++ {
-		// build a set of labels
+		log.Print("A", i, ":")
+		// determine numbers of labels and private labels
 		numLabels := rand.Intn(automatonMaxLabels-automatonMinLabels+1) + automatonMinLabels
+		maxPrivateLabels := automatonMaxPrivateLabels
+		if maxPrivateLabels > numLabels-1 {
+			maxPrivateLabels = numLabels - 1
+		}
+		minPrivateLabels := automatonMinPrivateLabels
+		if minPrivateLabels > maxPrivateLabels {
+			minPrivateLabels = maxPrivateLabels
+		}
+		numPrivateLabels := rand.Intn(maxPrivateLabels-minPrivateLabels+1) + minPrivateLabels
+		log.Print(numLabels, " labels, ", numPrivateLabels, " privates")
+		// build a set of labels
 		labels := make([]int, numLabels)
 		if lastLabel == 0 {
 			for i := 0; i < numLabels; i++ {
 				labels[i] = i
-				allLabels = append(allLabels, i)
+				if i < numLabels-numPrivateLabels {
+					log.Print("Maybe shared: a", i)
+					allLabels = append(allLabels, i)
+				} else {
+					log.Print("Private: a", i)
+				}
 			}
 			lastLabel += numLabels
 		} else {
-			numSharedLabels := rand.Intn(numLabels) + 1
-			if numSharedLabels > len(allLabels) {
-				numSharedLabels = len(allLabels)
+			numSharedLabelsFromPrevious := rand.Intn(numLabels-numPrivateLabels) + 1
+			if numSharedLabelsFromPrevious > len(allLabels) {
+				numSharedLabelsFromPrevious = len(allLabels)
 			}
-			rand.Shuffle(len(allLabels), func(i, j int) {
-				allLabels[i], allLabels[j] = allLabels[j], allLabels[i]
-			})
-			for i := 0; i < numSharedLabels; i++ {
-				labels[i] = allLabels[i]
+			log.Print(numSharedLabelsFromPrevious, " from previous")
+			if numSharedLabelsFromPrevious > 0 {
+				rand.Shuffle(len(allLabels), func(i, j int) {
+					allLabels[i], allLabels[j] = allLabels[j], allLabels[i]
+				})
+				for i := 0; i < numSharedLabelsFromPrevious; i++ {
+					labels[i] = allLabels[i]
+					log.Print("Shared: a", allLabels[i])
+				}
 			}
-			for i := numSharedLabels; i < numLabels; i++ {
+			for i := numSharedLabelsFromPrevious; i < numLabels; i++ {
 				lastLabel++
 				labels[i] = lastLabel
-				allLabels = append(allLabels, lastLabel)
+				if i < numLabels-numPrivateLabels {
+					log.Print("Maybe shared: a", lastLabel)
+					allLabels = append(allLabels, lastLabel)
+				} else {
+					log.Print("Private: a", lastLabel)
+				}
 			}
 		}
 		// generate an automaton

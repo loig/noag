@@ -30,20 +30,20 @@ type graph struct {
 func genGraph() graph {
 
 	var g graph
-	g.automata = make([]automaton, graphNumAutomata)
-	g.jsonAutomata = make([]JSONAutomaton, graphNumAutomata)
+	g.automata = make([]automaton, config.NumAutomata)
+	g.jsonAutomata = make([]JSONAutomaton, config.NumAutomata)
 
 	lastLabel := 0
 	allLabels := make([]int, 0)
 
-	for i := 0; i < graphNumAutomata; i++ {
+	for i := 0; i < config.NumAutomata; i++ {
 		// determine numbers of labels and private labels
-		numLabels := rand.Intn(automatonMaxLabels-automatonMinLabels+1) + automatonMinLabels
-		maxPrivateLabels := automatonMaxPrivateLabels
+		numLabels := rand.Intn(config.MaxNumLabelsPerAutomaton-config.MinNumLabelsPerAutomaton+1) + config.MinNumLabelsPerAutomaton
+		maxPrivateLabels := config.MaxNumPrivateLabelsPerAutomaton
 		if maxPrivateLabels > numLabels-1 {
 			maxPrivateLabels = numLabels - 1
 		}
-		minPrivateLabels := automatonMinPrivateLabels
+		minPrivateLabels := config.MinNumPrivateLabelsPerAutomaton
 		if minPrivateLabels > maxPrivateLabels {
 			minPrivateLabels = maxPrivateLabels
 		}

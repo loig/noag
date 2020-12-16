@@ -18,22 +18,26 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package main
 
-// characteristics of the generated automata
+var config Configuration
+
+// default characteristics of the generated automata
+/*
 const (
-	automatonMinNumStates           = 5  // must be at least 1
-	automatonMaxNumStates           = 10 // must be greater or equal than the above
-	automatonMinGoalStates          = 2  // must be at least 1
-	automatonMaxGoalStates          = 7  // must be greater or equal than the above
-	automatonMinLabels              = 3  // must be at least 1
-	automatonMaxLabels              = 8  // must be greater or equal than the above
-	automatonMinPrivateLabels       = 2  // can be 0
-	automatonMaxPrivateLabels       = 7  // notice that the number of private labels is at most the number of labels minus 1 because at least one label must be shared
-	automatonMinTransitionsPerState = 2  // could be 0, will never be more than the number of labels in an automaton
-	automatonMinTransitions         = 10 // could be 0, will neve be more than the number of states * the number of labels in an automaton
+	automatonMinNumStates           = 5
+	automatonMaxNumStates           = 10
+	automatonMinGoalStates          = 2
+	automatonMaxGoalStates          = 7
+	automatonMinLabels              = 3
+	automatonMaxLabels              = 8
+	automatonMinPrivateLabels       = 2
+	automatonMaxPrivateLabels       = 7
+	automatonMinTransitionsPerState = 2
+	automatonMinTransitions         = 10
 	graphNumAutomata                = 5
 )
+*/
 
-// names of things
+// default names of things
 const (
 	automatonName = "A"
 	stateName     = "s"

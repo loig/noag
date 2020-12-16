@@ -30,6 +30,7 @@ func main() {
 
 	rand.Seed(int64(time.Now().Nanosecond()))
 
+	readConfigurationFile("conf.json")
 	g := genGraph()
 	out, err := json.Marshal(g.jsonAutomata)
 	if err != nil {

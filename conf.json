@@ -1,0 +1,13 @@
+{
+  "MinNumStatesPerAutomaton": 1,
+  "MaxNumStatesPerAutomaton": 1,
+	"MinNumGoalStatesPerAutomaton": 1,
+	"MaxNumGoalStatesPerAutomaton": 1,
+	"MinNumLabelsPerAutomaton": 1,
+	"MaxNumLabelsPerAutomaton": 1,
+	"MinNumPrivateLabelsPerAutomaton": 0,
+	"MaxNumPrivateLabelsPerAutomaton": 0,
+	"MinNumTransitionsPerState": 1,
+	"MinNumTransitionsPerAutomaton": 1,
+	"NumAutomata": 1
+}

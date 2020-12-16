@@ -46,10 +46,10 @@ Generate an automaton
 func genAutomaton(labels []int) automaton {
 
 	// number of states
-	numStates := rand.Intn(automatonMaxNumStates-automatonMinNumStates+1) + automatonMinNumStates
+	numStates := rand.Intn(config.MaxNumStatesPerAutomaton-config.MinNumStatesPerAutomaton+1) + config.MinNumStatesPerAutomaton
 
 	// number of goal states
-	numGoalStates := rand.Intn(automatonMaxGoalStates-automatonMinGoalStates+1) + automatonMinGoalStates
+	numGoalStates := rand.Intn(config.MaxNumGoalStatesPerAutomaton-config.MinNumGoalStatesPerAutomaton+1) + config.MinNumGoalStatesPerAutomaton
 	if numGoalStates > numStates {
 		numGoalStates = numStates
 	}
@@ -79,18 +79,18 @@ func genAutomaton(labels []int) automaton {
 	numLabelsUsedPerState := make([]int, numStates)
 	blockedStates := make([]bool, numStates)
 	numBlockedStates := 0
-	minNumTransitions := automatonMinTransitions
+	minNumTransitions := config.MinNumTransitionsPerAutomaton
 	if minNumTransitions > numStates*len(labels) {
 		minNumTransitions = numStates * len(labels)
 	}
-	enoughTransitions := automatonMinTransitions == 0
-	minNumTransitionsPerState := automatonMinTransitionsPerState
+	enoughTransitions := config.MinNumTransitionsPerAutomaton == 0
+	minNumTransitionsPerState := config.MinNumTransitionsPerState
 	if minNumTransitionsPerState > len(labels) {
 		minNumTransitionsPerState = len(labels)
 	}
 	enoughTransitionsStates := make([]bool, numStates)
 	numEnoughTransitionsStates := 0
-	enoughTransitionsPerState := automatonMinTransitionsPerState == 0
+	enoughTransitionsPerState := config.MinNumTransitionsPerState == 0
 	for !allStatesReached || !allLabelsUsed ||
 		!enoughTransitions || !enoughTransitionsPerState {
 		// choose a reachable state

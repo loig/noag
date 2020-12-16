@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import (
+	"log"
 	"math/rand"
 )
 
@@ -28,6 +29,7 @@ type graph struct {
 }
 
 func genGraph() graph {
+	log.Print("Starting generation of ", config.NumAutomata, " automata")
 
 	var g graph
 	g.automata = make([]automaton, config.NumAutomata)
@@ -80,10 +82,13 @@ func genGraph() graph {
 			}
 		}
 		// generate an automaton
+		log.Print("Starting generation of automaton ", automatonName, i)
 		g.automata[i] = genAutomaton(labels)
 		g.jsonAutomata[i] = g.automata[i].toJSON(i)
+		log.Print("Labels: ", g.jsonAutomata[i].InputSymbols)
+		log.Print("Automaton ", automatonName, i, " generated")
 	}
 
+	log.Print("Generation complete")
 	return g
-
 }

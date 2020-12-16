@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import (
+	"log"
 	"math/rand"
 )
 
@@ -47,12 +48,14 @@ func genAutomaton(labels []int) automaton {
 
 	// number of states
 	numStates := rand.Intn(config.MaxNumStatesPerAutomaton-config.MinNumStatesPerAutomaton+1) + config.MinNumStatesPerAutomaton
+	log.Print("Number of states: ", numStates)
 
 	// number of goal states
 	numGoalStates := rand.Intn(config.MaxNumGoalStatesPerAutomaton-config.MinNumGoalStatesPerAutomaton+1) + config.MinNumGoalStatesPerAutomaton
 	if numGoalStates > numStates {
 		numGoalStates = numStates
 	}
+	log.Print("Number of goal states: ", numGoalStates)
 
 	// set of goal states
 	allStates := make([]int, numStates)
@@ -165,6 +168,7 @@ func genAutomaton(labels []int) automaton {
 		// count this transition
 		enoughTransitions = len(transitions) >= minNumTransitions
 	}
+	log.Print("Number of transitions: ", len(transitions))
 
 	return automaton{
 		numStates:   numStates,

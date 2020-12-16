@@ -1,13 +1,13 @@
 {
-  "MinNumStatesPerAutomaton": 1,
-  "MaxNumStatesPerAutomaton": 1,
+  "MinNumStatesPerAutomaton": 2,
+  "MaxNumStatesPerAutomaton": 7,
 	"MinNumGoalStatesPerAutomaton": 1,
-	"MaxNumGoalStatesPerAutomaton": 1,
-	"MinNumLabelsPerAutomaton": 1,
-	"MaxNumLabelsPerAutomaton": 1,
-	"MinNumPrivateLabelsPerAutomaton": 0,
-	"MaxNumPrivateLabelsPerAutomaton": 0,
-	"MinNumTransitionsPerState": 1,
-	"MinNumTransitionsPerAutomaton": 1,
-	"NumAutomata": 1
+	"MaxNumGoalStatesPerAutomaton": 2,
+	"MinNumLabelsPerAutomaton": 2,
+	"MaxNumLabelsPerAutomaton": 10,
+	"MinNumPrivateLabelsPerAutomaton": 1,
+	"MaxNumPrivateLabelsPerAutomaton": 3,
+	"MinNumTransitionsPerState": 2,
+	"MinNumTransitionsPerAutomaton": 8,
+	"NumAutomata": 324
 }

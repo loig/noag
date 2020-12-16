@@ -32,11 +32,10 @@ type JSONAutomaton struct {
 }
 
 type JSONTransitions struct {
-	Content []JSONTransition
+	Content map[string][]JSONTransition
 }
 
 type JSONTransition struct {
-	From  string
 	To    string
 	Label string
 }
@@ -45,14 +44,22 @@ func (jsonTrans JSONTransitions) MarshalJSON() ([]byte, error) {
 
 	var asJSON string
 	asJSON += "{"
-	for i, transition := range jsonTrans.Content {
-		if i != 0 {
+	firstLoop := true
+	for from, transitions := range jsonTrans.Content {
+		if !firstLoop {
 			asJSON += ","
+		} else {
+			firstLoop = false
 		}
-		asJSON += "\"" + transition.From + "\":"
+		asJSON += "\"" + from + "\":"
 		asJSON += "{"
-		asJSON += "\"" + transition.Label + "\":"
-		asJSON += "\"" + transition.To + "\""
+		for i, transition := range transitions {
+			if i != 0 {
+				asJSON += ","
+			}
+			asJSON += "\"" + transition.Label + "\":"
+			asJSON += "\"" + transition.To + "\""
+		}
 		asJSON += "}"
 	}
 	asJSON += "}"
@@ -79,12 +86,18 @@ func (a automaton) toJSON(id int) JSONAutomaton {
 	}
 
 	// Transitions
-	jAutomaton.Transitions.Content = make([]JSONTransition, len(a.transitions))
-	for i, transition := range a.transitions {
-		jAutomaton.Transitions.Content[i] = JSONTransition{
-			From:  fmt.Sprint(stateName, transition.from),
+	jAutomaton.Transitions.Content = make(map[string][]JSONTransition)
+	for _, transition := range a.transitions {
+		from := fmt.Sprint(stateName, transition.from)
+		jTransition := JSONTransition{
 			To:    fmt.Sprint(stateName, transition.to),
 			Label: fmt.Sprint(actionName, transition.label),
+		}
+		jTransitions, found := jAutomaton.Transitions.Content[from]
+		if !found {
+			jAutomaton.Transitions.Content[from] = []JSONTransition{jTransition}
+		} else {
+			jAutomaton.Transitions.Content[from] = append(jTransitions, jTransition)
 		}
 	}
 
